@@ -16,6 +16,20 @@ import { Upload } from "lucide-react"
 export default function OffertePage() {
   const [showOtherService, setShowOtherService] = useState(false)
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
+  const [formState, setFormState] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    service: '',
+    otherService: '',
+    aantal: '',
+    maat: '',
+    merk: '',
+    description: '',
+  });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -24,11 +38,46 @@ export default function OffertePage() {
     }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle form submission
-    console.log("Form submitted")
-  }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormState({ ...formState, [e.target.id]: e.target.value });
+  };
+
+  const handleSelectChange = (id: string, value: string) => {
+    setFormState({ ...formState, [id]: value });
+  };
+
+  const handleServiceChange = (service: string) => {
+    setFormState({ ...formState, service });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setSuccess(false);
+    try {
+      const formData = new FormData();
+      Object.entries(formState).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+      selectedFiles.forEach((file) => {
+        formData.append('photos', file);
+      });
+      const res = await fetch('/api/send-offerte', {
+        method: 'POST',
+        body: formData,
+      });
+      const result = await res.json();
+      if (result.success) {
+        setSuccess(true);
+      } else {
+        setError(result.error || 'Er is iets misgegaan. Probeer het opnieuw.');
+      }
+    } catch (err) {
+      setError('Er is iets misgegaan. Probeer het opnieuw.');
+    }
+    setLoading(false);
+  };
 
   return (
     <div className="min-h-screen bg-zinc-900">

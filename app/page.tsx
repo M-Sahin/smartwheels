@@ -1,9 +1,32 @@
+"use client"
+// countup func
+function StatCountUp({ end, suffix = '', duration = 1200, className = '' }: { end: number; suffix?: string; duration?: number; className?: string }) {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    let start = 0;
+    if (start === end) return;
+    let increment = Math.max(1, Math.ceil(end / (duration / 16)));
+    let current = start;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= end) {
+        current = end;
+        clearInterval(timer);
+      }
+      setCount(current);
+    }, 16);
+    return () => clearInterval(timer);
+  }, [end, duration]);
+  return <div className={className}>{count.toLocaleString()}{suffix}</div>;
+}
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Navigation } from "@/components/navigation"
 import { Wrench, Cog, Target, Droplet, Hammer, ShoppingCart, CheckCircle, Clock, Award } from "lucide-react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 export default function Home() {
   const services = [
@@ -35,10 +58,11 @@ export default function Home() {
     {
       icon: ShoppingCart,
       title: "In- & Verkoop Velgen",
-      description: "Ruime voorraad velgen in diverse maten en stijlen",
+      description: "Bekijk direct onze actuele voorraad velgen op Marktplaats",
       hasButton: true,
     },
-  ]
+  ];
+  const pathname = usePathname();
 
   return (
     <div className="min-h-screen bg-zinc-900">
@@ -96,21 +120,21 @@ export default function Home() {
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <CheckCircle className="w-6 h-6 text-orange-500" />
-                <div className="text-4xl font-bold text-white">5000+</div>
+                <StatCountUp end={5000} duration={3500} suffix="+" className="text-4xl font-bold text-white" />
               </div>
               <p className="text-zinc-400">Velgen Behandeld</p>
             </div>
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <Clock className="w-6 h-6 text-orange-500" />
-                <div className="text-4xl font-bold text-white">15+</div>
+                <StatCountUp end={15} duration={2500} suffix="+" className="text-4xl font-bold text-white" />
               </div>
               <p className="text-zinc-400">Jaar Ervaring</p>
             </div>
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <Award className="w-6 h-6 text-orange-500" />
-                <div className="text-4xl font-bold text-white">100%</div>
+                <StatCountUp end={100} duration={2500} suffix="%" className="text-4xl font-bold text-white" />
               </div>
               <p className="text-zinc-400">Klanttevredenheid</p>
             </div>
@@ -292,27 +316,35 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Column 2: Sitemap */}
+            {/* Column 2: Handige links */}
             <div>
-              <h4 className="text-lg font-semibold text-white mb-4">Sitemap</h4>
+              <h4 className="text-lg font-semibold text-white mb-4">Handige links</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link href="/diensten" className="text-zinc-400 hover:text-orange-600 transition-colors">
+                  <Link href="/diensten" className={
+                    `transition-colors ${pathname === "/diensten" ? "text-orange-600 font-bold" : "text-zinc-400 hover:text-orange-600"}`
+                  }>
                     Diensten
                   </Link>
                 </li>
                 <li>
-                  <Link href="/projecten" className="text-zinc-400 hover:text-orange-600 transition-colors">
+                  <Link href="/projecten" className={
+                    `transition-colors ${pathname === "/projecten" ? "text-orange-600 font-bold" : "text-zinc-400 hover:text-orange-600"}`
+                  }>
                     Projecten
                   </Link>
                 </li>
                 <li>
-                  <Link href="/over-ons" className="text-zinc-400 hover:text-orange-600 transition-colors">
+                  <Link href="/over-ons" className={
+                    `transition-colors ${pathname === "/over-ons" ? "text-orange-600 font-bold" : "text-zinc-400 hover:text-orange-600"}`
+                  }>
                     Over Ons
                   </Link>
                 </li>
                 <li>
-                  <Link href="/contact" className="text-zinc-400 hover:text-orange-600 transition-colors">
+                  <Link href="/contact" className={
+                    `transition-colors ${pathname === "/contact" ? "text-orange-600 font-bold" : "text-zinc-400 hover:text-orange-600"}`
+                  }>
                     Contact
                   </Link>
                 </li>
