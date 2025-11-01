@@ -1,47 +1,53 @@
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Navigation } from "@/components/navigation"
 import Image from "next/image"
 import Link from "next/link"
+import { client } from "@/sanity/lib/client"
+import imageUrlBuilder from '@sanity/image-url'
 
-export default function ProjectenPage() {
-  const projects = [
-    {
-      title: "Voor & Na: Complete Velgreparatie",
-      description:
-        "Deze velgen kwamen binnen met zware randschade en corrosie. Na richten, reparatie en poedercoaten in glanzend zwart zien ze er weer uit als nieuw.",
-      image: "/before-and-after-car-wheel-restoration-damaged-whe.jpg",
-      services: ["Richten", "Reparatie", "Poedercoaten"],
+const builder = imageUrlBuilder(client)
+
+function urlFor(source: any) {
+  return builder.image(source)
+}
+
+interface Project {
+  _id: string
+  title: string
+  slug: { current: string }
+  description: string
+  beforeImage: any
+  afterImage: any
+  services: string[]
+  order: number
+}
+
+async function getProjects(): Promise<Project[]> {
+  const query = `*[_type == "project"] | order(order asc) {
+    _id,
+    title,
+    slug,
+    description,
+    beforeImage {
+      asset->{
+        _id,
+        url
+      }
     },
-    {
-      title: "Poedercoating: Glanzend Zwart",
-      description:
-        "Een set premium velgen voorzien van een hoogwaardige glanzend zwarte poedercoating. Het resultaat is een diepe, duurzame glans die jaren meegaat.",
-      image: "/powder-coated-car-wheels-glossy-black-finish-premi.jpg",
-      services: ["Ontlakken", "Poedercoaten"],
+    afterImage {
+      asset->{
+        _id,
+        url
+      }
     },
-    {
-      title: "CNC Afdraaien: Precisiewerk",
-      description:
-        "Deze velgen zijn volledig gerestaureerd en voorzien van een prachtige CNC-afwerking. De diamant-cut finish geeft een luxe uitstraling.",
-      image: "/cnc-machined-car-wheel-precision-finish-automotive.jpg",
-      services: ["CNC Afdraaien", "Poedercoaten"],
-    },
-    {
-      title: "Custom Kleur: Metallic Blauw",
-      description:
-        "Een unieke custom kleur voor deze velgen. De metallic blauwe poedercoating geeft de auto een opvallende en persoonlijke uitstraling.",
-      image: "/restored-alloy-wheels-custom-color-powder-coating.jpg",
-      services: ["Ontlakken", "Poedercoaten"],
-    },
-    {
-      title: "Premium Restauratie",
-      description:
-        "Complete restauratie van deze high-end velgen. Van ontlakken tot poedercoaten en CNC afdraaien, alles is met de grootste zorg uitgevoerd.",
-      image: "/luxury-sports-car-wheels-close-up-dramatic-lightin.jpg",
-      services: ["Ontlakken", "Reparatie", "CNC Afdraaien", "Poedercoaten"],
-    },
-  ]
+    services,
+    order
+  }`
+  return client.fetch(query)
+}
+
+export default async function ProjectenPage() {
+  const projects = await getProjects()
 
   return (
     <div className="min-h-screen bg-zinc-900">
@@ -68,42 +74,68 @@ export default function ProjectenPage() {
         </div>
       </section>
 
-      {/* Projects Grid */}
+      {/* Projects Section */}
       <section className="py-20 bg-zinc-900">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 gap-8 max-w-6xl mx-auto">
-            {projects.map((project, index) => (
-              <Card key={index} className="bg-zinc-800 border-zinc-700 overflow-hidden">
-                <CardContent className="p-0">
-                  <div className="grid md:grid-cols-2 gap-0">
-                    <div className="relative aspect-square md:aspect-auto">
+          <div className="space-y-16">
+            {projects.map((project) => (
+              <div
+                key={project._id}
+                className="bg-zinc-800/50 rounded-3xl overflow-hidden border border-zinc-700/50"
+              >
+                <div className="grid md:grid-cols-2 gap-8 p-8 md:p-12">
+                  {/* Images Section */}
+                  <div className="grid grid-cols-2 gap-4">
+                    {/* Before Image */}
+                    <div className="relative aspect-square rounded-xl overflow-hidden">
                       <Image
-                        src={project.image || "/placeholder.svg"}
-                        alt={project.title}
+                        src={urlFor(project.beforeImage).width(400).height(400).fit('crop').url()}
+                        alt="Voor"
                         fill
                         className="object-cover"
                       />
                     </div>
-                    <div className="p-8 flex flex-col justify-center">
-                      <h3 className="text-2xl font-bold text-white mb-4">{project.title}</h3>
-                      <p className="text-zinc-300 mb-6 leading-relaxed">{project.description}</p>
-                      <div>
-                        <h4 className="text-sm font-semibold text-zinc-400 mb-2">Uitgevoerde diensten:</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {project.services.map((service, idx) => (
-                            <span
-                              key={idx}
-                              className="px-3 py-1 bg-zinc-700 text-zinc-300 rounded-full text-sm border border-zinc-600"
-                            >
-                              {service}
-                            </span>
-                          ))}
-                        </div>
+                    
+                    {/* After Image */}
+                    <div className="relative aspect-square rounded-xl overflow-hidden">
+                      <Image
+                        src={urlFor(project.afterImage).width(400).height(400).fit('crop').url()}
+                        alt="Na"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Content Section */}
+                  <div className="flex flex-col justify-center space-y-6">
+                    <h2 className="text-3xl md:text-4xl font-bold text-white">
+                      {project.title}
+                    </h2>
+                    
+                    <p className="text-zinc-300 text-lg leading-relaxed">
+                      {project.description}
+                    </p>
+
+                    <div>
+                      <h3 className="text-lg font-semibold text-zinc-400 mb-4">
+                        Uitgevoerde diensten:
+                      </h3>
+                      
+                      <div className="flex flex-wrap gap-3">
+                        {project.services.map((service, index) => (
+                          <span
+                            key={index}
+                            className="px-5 py-2.5 bg-zinc-700/80 text-white rounded-full text-sm font-medium border border-zinc-600/50"
+                          >
+                            {service}
+                          </span>
+                        ))}
                       </div>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ))}
           </div>
         </div>
