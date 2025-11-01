@@ -27,8 +27,49 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { client } from "@/sanity/lib/client"
+import imageUrlBuilder from '@sanity/image-url'
+import { Instagram } from "lucide-react";
+
+const builder = imageUrlBuilder(client)
+
+function urlFor(source: any) {
+  return builder.image(source)
+}
+
+interface Project {
+  _id: string
+  title: string
+  slug: { current: string }
+  description: string
+  beforeImage: any
+  afterImage: any
+  services: string[]
+  order: number
+}
 
 export default function Home() {
+  const [recentProjects, setRecentProjects] = useState<Project[]>([])
+  const pathname = usePathname()
+
+  useEffect(() => {
+    async function fetchRecentProjects() {
+      const query = `*[_type == "project"] | order(_createdAt desc)[0..2] {
+        _id,
+        title,
+        slug,
+        description,
+        beforeImage,
+        afterImage,
+        services,
+        order
+      }`
+      const projects = await client.fetch(query)
+      setRecentProjects(projects)
+    }
+    fetchRecentProjects()
+  }, [])
+
   const services = [
     {
       icon: Droplet,
@@ -43,7 +84,7 @@ export default function Home() {
     {
       icon: Target,
       title: "Richten van Velgen",
-      description: "Professioneel richten van beschadigde velgen",
+      description: "Professionele richten van beschadigde velgen",
     },
     {
       icon: Wrench,
@@ -62,7 +103,6 @@ export default function Home() {
       hasButton: true,
     },
   ];
-  const pathname = usePathname();
 
   return (
     <div className="min-h-screen bg-zinc-900">
@@ -189,77 +229,61 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Project Preview Section */}
+      {/* Project Preview Section - Now Dynamic */}
       <section className="py-20 bg-zinc-950">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <span className="text-orange-500 font-semibold text-sm uppercase tracking-wider">Portfolio</span>
             <h2 className="text-4xl md:text-5xl font-bold text-white mt-2 mb-4">Recent Werk</h2>
-            <p className="text-zinc-400 text-lg">Bekijk onze transformaties</p>
+            <p className="text-zinc-400 text-lg">Bekijk onze nieuwste transformaties</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto mb-8">
-            {/* Featured large project */}
-            <div className="relative aspect-square md:col-span-2 md:row-span-2 rounded-xl overflow-hidden group">
-              <Image
-                src="/before-and-after-car-wheel-restoration-damaged-whe.jpg"
-                alt="Project 1"
-                fill
-                className="object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
-              <div className="absolute inset-0 flex flex-col justify-end p-6">
-                <span className="text-orange-500 font-semibold text-sm mb-2">FEATURED PROJECT</span>
-                <p className="text-white font-bold text-2xl mb-2">Voor & Na: Velgreparatie</p>
-                <p className="text-zinc-300 text-sm">Complete restauratie met poedercoating</p>
-              </div>
+          {recentProjects.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-8">
+              {recentProjects.map((project, index) => (
+                <Link
+                  key={project._id}
+                  href={`/projecten#${project.slug.current}`}
+                  className={`relative rounded-xl overflow-hidden group ${
+                    index === 0 ? 'md:col-span-2 md:row-span-2 aspect-square' : 'aspect-square'
+                  }`}
+                >
+                  <Image
+                    src={urlFor(project.afterImage).width(800).height(800).fit('crop').url()}
+                    alt={project.title}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+                  <div className="absolute inset-0 flex flex-col justify-end p-6">
+                    {index === 0 && (
+                      <span className="text-orange-500 font-semibold text-sm mb-2">NIEUWSTE PROJECT</span>
+                    )}
+                    <p className={`text-white font-bold ${index === 0 ? 'text-2xl' : 'text-xl'} mb-2`}>
+                      {project.title}
+                    </p>
+                    <p className="text-zinc-300 text-sm line-clamp-2">{project.description}</p>
+                    {project.services.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {project.services.slice(0, 3).map((service, i) => (
+                          <span
+                            key={i}
+                            className="text-xs px-2 py-1 bg-orange-600/20 text-orange-500 rounded-full"
+                          >
+                            {service}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              ))}
             </div>
-
-            <div className="relative aspect-square rounded-xl overflow-hidden group">
-              <Image
-                src="/powder-coated-car-wheels-glossy-black-finish-premi.jpg"
-                alt="Project 2"
-                fill
-                className="object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end">
-                <div className="p-4">
-                  <span className="text-orange-500 text-xs font-semibold">POEDERCOATING</span>
-                  <p className="text-white font-semibold">Glanzend Zwart</p>
-                </div>
-              </div>
+          ) : (
+            <div className="text-center text-zinc-400 mb-8">
+              <p>Nog geen projecten beschikbaar. Voeg projecten toe via de Sanity Studio.</p>
             </div>
-
-            <div className="relative aspect-square rounded-xl overflow-hidden group">
-              <Image
-                src="/cnc-machined-car-wheel-precision-finish-automotive.jpg"
-                alt="Project 3"
-                fill
-                className="object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end">
-                <div className="p-4">
-                  <span className="text-orange-500 text-xs font-semibold">CNC AFDRAAIEN</span>
-                  <p className="text-white font-semibold">Precisiewerk</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative aspect-square md:col-span-2 rounded-xl overflow-hidden group">
-              <Image
-                src="/restored-alloy-wheels-custom-color-powder-coating.jpg"
-                alt="Project 4"
-                fill
-                className="object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end">
-                <div className="p-6">
-                  <span className="text-orange-500 text-xs font-semibold">CUSTOM KLEUR</span>
-                  <p className="text-white font-bold text-xl">Metallic Blauw Finish</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          )}
 
           <div className="text-center">
             <Button
@@ -271,6 +295,79 @@ export default function Home() {
               <Link href="/projecten">Bekijk alle projecten</Link>
             </Button>
           </div>
+        </div>
+      </section>
+
+      {/* Instagram Reels Section - NEW */}
+      <section className="py-20 bg-zinc-900 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-orange-600/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-orange-600/5 rounded-full blur-3xl" />
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600/20 to-pink-600/20 border border-purple-600/50 rounded-full px-4 py-2 mb-4">
+              <Instagram className="w-5 h-5 text-pink-500" />
+              <span className="text-pink-500 text-sm font-semibold">Volg Ons Op Instagram</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mt-2 mb-4">Bekijk Onze Reels</h2>
+            <p className="text-zinc-400 text-lg">Zie onze transformaties in actie</p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            {/* Instagram Embed Container */}
+            <div className="bg-zinc-800/50 backdrop-blur border border-zinc-700 rounded-2xl p-8 text-center">
+              <div className="mb-6">
+                <Instagram className="w-16 h-16 text-pink-500 mx-auto mb-4" />
+                <p className="text-zinc-300 text-lg mb-2">
+                  Bekijk onze nieuwste velgtransformaties en werkplaats updates
+                </p>
+                <p className="text-zinc-400 text-sm">
+                  Dagelijks nieuwe content op Instagram
+                </p>
+              </div>
+
+              <Button
+                asChild
+                size="lg"
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-lg px-8 shadow-lg shadow-pink-600/30 hover:shadow-pink-600/50 transition-all hover:scale-105"
+              >
+                <a
+                  href="https://www.instagram.com/smart.7952/reels/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2"
+                >
+                  <Instagram className="w-5 h-5" />
+                  Bekijk Onze Reels
+                </a>
+              </Button>
+
+              <div className="mt-6 pt-6 border-t border-zinc-700">
+                <p className="text-zinc-500 text-sm">
+                  @smart.7952
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Alternative: Grid Preview (if you want to show preview thumbnails) */}
+          {/* 
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto mt-8">
+            {[1, 2, 3, 4].map((item) => (
+              <a
+                key={item}
+                href="https://www.instagram.com/smart.7952/reels/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative aspect-square rounded-xl overflow-hidden group bg-zinc-800"
+              >
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <Instagram className="w-12 h-12 text-white" />
+                </div>
+              </a>
+            ))}
+          </div>
+          */}
         </div>
       </section>
 
