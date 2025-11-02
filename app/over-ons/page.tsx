@@ -29,6 +29,25 @@ export default function OverOnsPage() {
     },
   ]
 
+  const whyChooseUs = [
+    {
+      title: "Alles onder één dak",
+      description: "Van reparatie tot poedercoaten en CNC afdraaien. U hoeft niet naar meerdere bedrijven, wij regelen alles voor u.",
+    },
+    {
+      title: "Eerlijke prijzen",
+      description: "Transparante prijzen zonder verborgen kosten. U weet vooraf precies waar u aan toe bent.",
+    },
+    {
+      title: "Snelle levertijd",
+      description: "Wij begrijpen dat u snel weer de weg op wilt. Daarom werken we efficiënt zonder in te leveren op kwaliteit.",
+    },
+    {
+      title: "Persoonlijk advies",
+      description: "Niet zeker welke service u nodig heeft? Wij denken graag met u mee en adviseren u vrijblijvend.",
+    },
+  ]
+
   return (
     <div className="min-h-screen bg-zinc-900">
       <Navigation />
@@ -40,14 +59,16 @@ export default function OverOnsPage() {
             src="/high-end-luxury-car-wheel-close-up-dark-automotive.jpg"
             alt="Over Ons"
             fill
-            className="object-cover opacity-20"
+            className="object-cover opacity-20 animate-pulse"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-zinc-900 via-zinc-900/90 to-zinc-900" />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 text-balance">Over SmartWheels</h1>
-          <p className="text-xl text-zinc-300 max-w-3xl mx-auto text-balance leading-relaxed">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 text-balance animate-in fade-in slide-in-from-bottom-8 duration-700">
+            Over SmartWheels
+          </h1>
+          <p className="text-xl text-zinc-300 max-w-3xl mx-auto text-balance leading-relaxed animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
             Uw specialist in velgenservice met passie voor perfectie
           </p>
         </div>
@@ -57,26 +78,26 @@ export default function OverOnsPage() {
       <section className="py-20 bg-zinc-900">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <Card className="bg-zinc-800 border-zinc-700">
+            <Card className="bg-zinc-800 border-zinc-700 animate-in fade-in slide-in-from-left-8 duration-700 delay-300">
               <CardContent className="p-8 md:p-12">
                 <h2 className="text-3xl font-bold text-white mb-6">Ons Verhaal</h2>
                 <div className="space-y-4 text-zinc-300 leading-relaxed">
-                  <p>
+                  <p className="animate-in fade-in duration-700 delay-400">
                     SmartWheels is ontstaan uit een passie voor auto's en een oog voor detail. Wat begon als een kleine
                     onderneming is uitgegroeid tot een gespecialiseerd bedrijf in velgenservice, waar kwaliteit en
                     vakmanschap voorop staan.
                   </p>
-                  <p>
+                  <p className="animate-in fade-in duration-700 delay-500">
                     Met meer dan 10 jaar ervaring in de branche hebben wij ons ontwikkeld tot een betrouwbare partner
                     voor particulieren en bedrijven. Of het nu gaat om een complete restauratie, een custom
                     poedercoating of precisie CNC-werk, wij behandelen elke velg met dezelfde zorg en aandacht.
                   </p>
-                  <p>
+                  <p className="animate-in fade-in duration-700 delay-600">
                     Ons team bestaat uit ervaren vakmensen die hun kennis en kunde dagelijks inzetten om het beste
                     resultaat te behalen. We investeren continu in de nieuwste apparatuur en technieken, zodat we onze
                     klanten altijd de hoogste kwaliteit kunnen bieden.
                   </p>
-                  <p>
+                  <p className="animate-in fade-in duration-700 delay-700">
                     Bij SmartWheels draait het niet alleen om velgen, maar om de complete ervaring. Van het eerste
                     contact tot de oplevering, wij zorgen voor een persoonlijke en professionele service. Uw
                     tevredenheid is onze grootste motivatie.
@@ -91,14 +112,22 @@ export default function OverOnsPage() {
       {/* Values Section */}
       <section className="py-20 bg-zinc-950">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-white text-center mb-4">Onze Kernwaarden</h2>
-          <p className="text-zinc-400 text-center mb-12 text-lg">Waar wij voor staan</p>
+          <h2 className="text-4xl font-bold text-white text-center mb-4 animate-in fade-in slide-in-from-top-6 duration-700">
+            Onze Kernwaarden
+          </h2>
+          <p className="text-zinc-400 text-center mb-12 text-lg animate-in fade-in duration-700 delay-100">
+            Waar wij voor staan
+          </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {values.map((value, index) => (
-              <Card key={index} className="bg-zinc-800 border-zinc-700 text-center">
+              <Card
+                key={index}
+                className="bg-zinc-800 border-zinc-700 text-center animate-in fade-in slide-in-from-bottom-8 duration-700 hover:scale-105 hover:border-orange-600 transition-all"
+                style={{ animationDelay: `${100 * (index + 1)}ms` }}
+              >
                 <CardContent className="p-6">
-                  <value.icon className="w-12 h-12 text-orange-600 mb-4 mx-auto" />
+                  <value.icon className="w-12 h-12 text-orange-600 mb-4 mx-auto animate-in zoom-in duration-700" style={{ animationDelay: `${100 * (index + 1) + 200}ms` }} />
                   <h3 className="text-xl font-semibold text-white mb-3">{value.title}</h3>
                   <p className="text-zinc-400 leading-relaxed">{value.description}</p>
                 </CardContent>
@@ -112,42 +141,22 @@ export default function OverOnsPage() {
       <section className="py-20 bg-zinc-900">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl font-bold text-white text-center mb-12">Waarom SmartWheels?</h2>
+            <h2 className="text-4xl font-bold text-white text-center mb-12 animate-in fade-in slide-in-from-top-6 duration-700">
+              Waarom SmartWheels?
+            </h2>
             <div className="grid md:grid-cols-2 gap-6">
-              <Card className="bg-zinc-800 border-zinc-700">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold text-white mb-3">Alles onder één dak</h3>
-                  <p className="text-zinc-400 leading-relaxed">
-                    Van reparatie tot poedercoaten en CNC afdraaien. U hoeft niet naar meerdere bedrijven, wij regelen
-                    alles voor u.
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="bg-zinc-800 border-zinc-700">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold text-white mb-3">Eerlijke prijzen</h3>
-                  <p className="text-zinc-400 leading-relaxed">
-                    Transparante prijzen zonder verborgen kosten. U weet vooraf precies waar u aan toe bent.
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="bg-zinc-800 border-zinc-700">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold text-white mb-3">Snelle levertijd</h3>
-                  <p className="text-zinc-400 leading-relaxed">
-                    Wij begrijpen dat u snel weer de weg op wilt. Daarom werken we efficiënt zonder in te leveren op
-                    kwaliteit.
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="bg-zinc-800 border-zinc-700">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold text-white mb-3">Persoonlijk advies</h3>
-                  <p className="text-zinc-400 leading-relaxed">
-                    Niet zeker welke service u nodig heeft? Wij denken graag met u mee en adviseren u vrijblijvend.
-                  </p>
-                </CardContent>
-              </Card>
+              {whyChooseUs.map((item, index) => (
+                <Card
+                  key={index}
+                  className="bg-zinc-800 border-zinc-700 animate-in fade-in slide-in-from-left-8 duration-700 hover:border-orange-600 hover:shadow-lg hover:shadow-orange-600/20 transition-all"
+                  style={{ animationDelay: `${150 * index}ms` }}
+                >
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-semibold text-white mb-3">{item.title}</h3>
+                    <p className="text-zinc-400 leading-relaxed">{item.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </div>
@@ -156,19 +165,21 @@ export default function OverOnsPage() {
       {/* CTA Section */}
       <section className="py-20 bg-zinc-950">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 text-balance">Klaar om kennis te maken?</h2>
-          <p className="text-xl text-zinc-300 mb-8 max-w-2xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 text-balance animate-in fade-in slide-in-from-bottom-8 duration-700">
+            Klaar om kennis te maken?
+          </h2>
+          <p className="text-xl text-zinc-300 mb-8 max-w-2xl mx-auto animate-in fade-in duration-700 delay-100">
             Neem contact met ons op of vraag direct een vrijblijvende offerte aan.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-orange-600 hover:bg-orange-700 text-white text-lg px-8">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
+            <Button asChild size="lg" className="bg-orange-600 hover:bg-orange-700 text-white text-lg px-8 transition-all hover:shadow-lg hover:shadow-orange-600/50">
               <Link href="/offerte">Vraag Offerte Aan</Link>
             </Button>
             <Button
               asChild
               size="lg"
               variant="outline"
-              className="border-zinc-600 text-white hover:bg-zinc-800 text-lg px-8 bg-transparent"
+              className="border-zinc-600 text-white hover:bg-zinc-800 text-lg px-8 bg-transparent transition-all hover:border-orange-600 hover:shadow-lg hover:shadow-orange-600/20"
             >
               <Link href="/contact">Neem Contact Op</Link>
             </Button>
@@ -180,7 +191,7 @@ export default function OverOnsPage() {
       <footer className="bg-zinc-950 border-t border-zinc-800 py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <div>
+            <div className="animate-in fade-in duration-700">
               <h3 className="text-2xl font-bold text-white mb-4">SmartWheels</h3>
               <p className="text-zinc-400 leading-relaxed">
                 Uw betrouwbare partner voor alle velgenservice. Met jarenlange ervaring en vakmanschap zorgen wij ervoor
@@ -188,26 +199,26 @@ export default function OverOnsPage() {
               </p>
             </div>
 
-            <div>
+            <div className="animate-in fade-in duration-700 delay-100">
               <h4 className="text-lg font-semibold text-white mb-4">Sitemap</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link href="/diensten" className="text-zinc-400 hover:text-orange-600 transition-colors">
+                  <Link href="/diensten" className="text-zinc-400 hover:text-orange-600 transition-colors hover:translate-x-1 inline-block">
                     Diensten
                   </Link>
                 </li>
                 <li>
-                  <Link href="/projecten" className="text-zinc-400 hover:text-orange-600 transition-colors">
+                  <Link href="/projecten" className="text-zinc-400 hover:text-orange-600 transition-colors hover:translate-x-1 inline-block">
                     Projecten
                   </Link>
                 </li>
                 <li>
-                  <Link href="/over-ons" className="text-zinc-400 hover:text-orange-600 transition-colors">
+                  <Link href="/over-ons" className="text-zinc-400 hover:text-orange-600 transition-colors hover:translate-x-1 inline-block">
                     Over Ons
                   </Link>
                 </li>
                 <li>
-                  <Link href="/contact" className="text-zinc-400 hover:text-orange-600 transition-colors">
+                  <Link href="/contact" className="text-zinc-400 hover:text-orange-600 transition-colors hover:translate-x-1 inline-block">
                     Contact
                   </Link>
                 </li>
@@ -216,7 +227,7 @@ export default function OverOnsPage() {
                     href="https://www.marktplaats.nl/u/smartwheels/47376108/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-zinc-400 hover:text-orange-600 transition-colors"
+                    className="text-zinc-400 hover:text-orange-600 transition-colors hover:translate-x-1 inline-block"
                   >
                     Marktplaats
                   </a>
@@ -224,7 +235,7 @@ export default function OverOnsPage() {
               </ul>
             </div>
 
-            <div>
+            <div className="animate-in fade-in duration-700 delay-200">
               <h4 className="text-lg font-semibold text-white mb-4">Contactgegevens</h4>
               <div className="space-y-2 text-zinc-400">
                 <p>

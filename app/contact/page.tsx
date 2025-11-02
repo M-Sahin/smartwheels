@@ -6,6 +6,50 @@ import Image from "next/image"
 import Link from "next/link"
 
 export default function ContactPage() {
+  const contactInfo = [
+    {
+      icon: MapPin,
+      title: "Adres",
+      content: (
+        <>
+          Expeditieweg 8F
+          <br />
+          6673DV Andelst
+          <br />
+          Nederland
+        </>
+      ),
+    },
+    {
+      icon: Mail,
+      title: "Email",
+      content: (
+        <a
+          href="mailto:smartwheels1@outlook.com"
+          className="text-zinc-300 hover:text-orange-600 transition-colors"
+        >
+          smartwheels1@outlook.com
+        </a>
+      ),
+    },
+    {
+      icon: Clock,
+      title: "Openingstijden",
+      content: (
+        <div className="space-y-1 text-zinc-300 leading-relaxed">
+          <p>Maandag - Vrijdag: 08:00 - 17:00</p>
+          <p>Zaterdag: Op afspraak</p>
+          <p>Zondag: Gesloten</p>
+        </div>
+      ),
+    },
+    {
+      icon: Phone,
+      title: "Telefonisch Contact",
+      content: "Bel of mail ons voor vragen of om een afspraak te maken. Wij helpen u graag verder!",
+    },
+  ]
+
   return (
     <div className="min-h-screen bg-zinc-900">
       <Navigation />
@@ -17,14 +61,16 @@ export default function ContactPage() {
             src="/high-end-luxury-car-wheel-close-up-dark-automotive.jpg"
             alt="Contact"
             fill
-            className="object-cover opacity-20"
+            className="object-cover opacity-20 animate-pulse"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-zinc-900 via-zinc-900/90 to-zinc-900" />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 text-balance">Neem Contact Op</h1>
-          <p className="text-xl text-zinc-300 max-w-3xl mx-auto text-balance leading-relaxed">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 text-balance animate-in fade-in slide-in-from-bottom-8 duration-700">
+            Neem Contact Op
+          </h1>
+          <p className="text-xl text-zinc-300 max-w-3xl mx-auto text-balance leading-relaxed animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200">
             Heeft u vragen of wilt u een afspraak maken? Wij staan voor u klaar!
           </p>
         </div>
@@ -36,79 +82,36 @@ export default function ContactPage() {
           <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {/* Contact Information */}
             <div className="space-y-6">
-              <Card className="bg-zinc-800 border-zinc-700">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <MapPin className="w-6 h-6 text-orange-600 flex-shrink-0 mt-1" />
-                    <div>
-                      <h3 className="text-lg font-semibold text-white mb-2">Adres</h3>
-                      <p className="text-zinc-300 leading-relaxed">
-                        Expeditieweg 8F
-                        <br />
-                        6673DV Andelst
-                        <br />
-                        Nederland
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-zinc-800 border-zinc-700">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <Mail className="w-6 h-6 text-orange-600 flex-shrink-0 mt-1" />
-                    <div>
-                      <h3 className="text-lg font-semibold text-white mb-2">Email</h3>
-                      <a
-                        href="mailto:smartwheels1@outlook.com"
-                        className="text-zinc-300 hover:text-orange-600 transition-colors"
-                      >
-                        smartwheels1@outlook.com
-                      </a>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-zinc-800 border-zinc-700">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <Clock className="w-6 h-6 text-orange-600 flex-shrink-0 mt-1" />
-                    <div>
-                      <h3 className="text-lg font-semibold text-white mb-2">Openingstijden</h3>
-                      <div className="text-zinc-300 space-y-1">
-                        <p>Maandag - Vrijdag: 08:00 - 17:00</p>
-                        <p>Zaterdag: Op afspraak</p>
-                        <p>Zondag: Gesloten</p>
+              {contactInfo.map((info, index) => (
+                <Card
+                  key={index}
+                  className="bg-zinc-800 border-zinc-700 animate-in fade-in slide-in-from-left-8 duration-700 hover:border-orange-600 hover:shadow-lg hover:shadow-orange-600/20 transition-all"
+                  style={{ animationDelay: `${100 * index}ms` }}
+                >
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      <info.icon className="w-6 h-6 text-orange-600 flex-shrink-0 mt-1 animate-in zoom-in duration-700" style={{ animationDelay: `${100 * index + 200}ms` }} />
+                      <div>
+                        <h3 className="text-lg font-semibold text-white mb-2">{info.title}</h3>
+                        <div className="text-zinc-300 leading-relaxed">{info.content}</div>
                       </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              ))}
 
-              <Card className="bg-zinc-800 border-zinc-700">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <Phone className="w-6 h-6 text-orange-600 flex-shrink-0 mt-1" />
-                    <div>
-                      <h3 className="text-lg font-semibold text-white mb-2">Telefonisch Contact</h3>
-                      <p className="text-zinc-300 leading-relaxed">
-                        Bel of mail ons voor vragen of om een afspraak te maken. Wij helpen u graag verder!
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Button asChild size="lg" className="w-full bg-orange-600 hover:bg-orange-700 text-white">
+              <Button
+                asChild
+                size="lg"
+                className="w-full bg-orange-600 hover:bg-orange-700 text-white transition-all hover:shadow-lg hover:shadow-orange-600/50 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-400"
+              >
                 <Link href="/offerte">Direct Offerte Aanvragen</Link>
               </Button>
             </div>
 
             {/* Google Maps */}
-            <div className="lg:sticky lg:top-24 h-fit">
-              <Card className="bg-zinc-800 border-zinc-700 overflow-hidden">
+            <div className="lg:sticky lg:top-24 h-fit animate-in fade-in slide-in-from-right-8 duration-700 delay-200">
+              <Card className="bg-zinc-800 border-zinc-700 overflow-hidden hover:border-orange-600 hover:shadow-lg hover:shadow-orange-600/20 transition-all">
                 <CardContent className="p-0">
                   <div className="aspect-square lg:aspect-auto lg:h-[600px]">
                     <iframe
@@ -133,19 +136,19 @@ export default function ContactPage() {
       <section className="py-20 bg-zinc-950">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <Card className="bg-zinc-800 border-zinc-700">
+            <Card className="bg-zinc-800 border-zinc-700 animate-in fade-in slide-in-from-bottom-8 duration-700">
               <CardContent className="p-8">
                 <h2 className="text-2xl font-bold text-white mb-4">Routebeschrijving</h2>
                 <div className="text-zinc-300 leading-relaxed space-y-3">
-                  <p>
+                  <p className="animate-in fade-in duration-700 delay-200">
                     SmartWheels is gemakkelijk te bereiken vanaf de A15 en A50. Neem afslag Andelst en volg de borden
                     richting het industrieterrein.
                   </p>
-                  <p>
+                  <p className="animate-in fade-in duration-700 delay-300">
                     Wij bevinden ons op Expeditieweg 8F, een moderne bedrijfslocatie met voldoende parkeergelegenheid
                     voor onze klanten.
                   </p>
-                  <p className="font-semibold text-white">
+                  <p className="font-semibold text-white animate-in fade-in duration-700 delay-400">
                     Tip: Maak vooraf een afspraak, zodat wij voldoende tijd voor u kunnen reserveren en u direct
                     geholpen kunt worden.
                   </p>
@@ -160,7 +163,7 @@ export default function ContactPage() {
       <footer className="bg-zinc-950 border-t border-zinc-800 py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <div>
+            <div className="animate-in fade-in duration-700">
               <h3 className="text-2xl font-bold text-white mb-4">SmartWheels</h3>
               <p className="text-zinc-400 leading-relaxed">
                 Uw betrouwbare partner voor alle velgenservice. Met jarenlange ervaring en vakmanschap zorgen wij ervoor
@@ -168,26 +171,26 @@ export default function ContactPage() {
               </p>
             </div>
 
-            <div>
+            <div className="animate-in fade-in duration-700 delay-100">
               <h4 className="text-lg font-semibold text-white mb-4">Sitemap</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link href="/diensten" className="text-zinc-400 hover:text-orange-600 transition-colors">
+                  <Link href="/diensten" className="text-zinc-400 hover:text-orange-600 transition-colors hover:translate-x-1 inline-block">
                     Diensten
                   </Link>
                 </li>
                 <li>
-                  <Link href="/projecten" className="text-zinc-400 hover:text-orange-600 transition-colors">
+                  <Link href="/projecten" className="text-zinc-400 hover:text-orange-600 transition-colors hover:translate-x-1 inline-block">
                     Projecten
                   </Link>
                 </li>
                 <li>
-                  <Link href="/over-ons" className="text-zinc-400 hover:text-orange-600 transition-colors">
+                  <Link href="/over-ons" className="text-zinc-400 hover:text-orange-600 transition-colors hover:translate-x-1 inline-block">
                     Over Ons
                   </Link>
                 </li>
                 <li>
-                  <Link href="/contact" className="text-zinc-400 hover:text-orange-600 transition-colors">
+                  <Link href="/contact" className="text-zinc-400 hover:text-orange-600 transition-colors hover:translate-x-1 inline-block">
                     Contact
                   </Link>
                 </li>
@@ -196,7 +199,7 @@ export default function ContactPage() {
                     href="https://www.marktplaats.nl/u/smartwheels/47376108/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-zinc-400 hover:text-orange-600 transition-colors"
+                    className="text-zinc-400 hover:text-orange-600 transition-colors hover:translate-x-1 inline-block"
                   >
                     Marktplaats
                   </a>
@@ -204,7 +207,7 @@ export default function ContactPage() {
               </ul>
             </div>
 
-            <div>
+            <div className="animate-in fade-in duration-700 delay-200">
               <h4 className="text-lg font-semibold text-white mb-4">Contactgegevens</h4>
               <div className="space-y-2 text-zinc-400">
                 <p>
