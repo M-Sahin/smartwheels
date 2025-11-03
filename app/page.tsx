@@ -7,7 +7,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { client } from "@/sanity/lib/client"
 import imageUrlBuilder from '@sanity/image-url'
-import { HomeClient } from './home-client'
+import { HomeClient } from  "./home-client"
 
 export const metadata: Metadata = {
   title: "SmartWheels - Velgenservice Specialist in Andelst",
