@@ -3,6 +3,17 @@ import { Navigation } from "@/components/navigation"
 import Image from "next/image"
 import Link from "next/link"
 import { ServicesContent } from "./content"
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: "Onze Diensten - SmartWheels Velgenservice",
+  description: "Ontdek al onze velgendiensten: reparatie, poedercoaten, CNC afdraaien, ontlakken & stralen, in- en verkoop. Alles onder één dak!",
+  keywords: ["velgen reparatie", "poedercoaten", "CNC afdraaien", "velgen stralen", "velgenservice diensten"],
+  openGraph: {
+    title: "Onze Diensten - SmartWheels",
+    description: "Compleet pakket velgenservice met jarenlange ervaring.",
+  },
+}
 
 export const revalidate = 60
 

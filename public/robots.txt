@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /studio/
+
+Sitemap: https://smartwheels.nl/sitemap.xml

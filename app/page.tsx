@@ -1,14 +1,31 @@
-"use client"
-import { useState, useEffect, useRef } from "react"
+import { Metadata } from 'next'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Navigation } from "@/components/navigation"
-import { Wrench, Cog, Target, Droplet, Hammer, ShoppingCart, CheckCircle, Clock, Award, Instagram } from "lucide-react"
+import { Wrench, Cog, Target, Droplet, Hammer, ShoppingCart, Award, Instagram } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { client } from "@/sanity/lib/client"
 import imageUrlBuilder from '@sanity/image-url'
+import { HomeClient } from './home-client'
+
+export const metadata: Metadata = {
+  title: "SmartWheels - Velgenservice Specialist in Andelst",
+  description: "Professionele velgenreparatie, poedercoaten en CNC afdraaien. 5000+ velgen behandeld, 15+ jaar ervaring. Vraag uw offerte aan!",
+  keywords: ["velgen reparatie", "poedercoaten velgen", "CNC afdraaien", "velgenservice Andelst", "velgen restauratie"],
+  openGraph: {
+    title: "SmartWheels - Velgenservice Specialist",
+    description: "Van reparatie tot poedercoaten. Maak uw velgen weer als nieuw met SmartWheels.",
+    images: [
+      {
+        url: "https://smartwheels.nl/high-end-luxury-car-wheel-close-up-dark-automotive.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Premium velgen",
+      },
+    ],
+  },
+}
 
 const builder = imageUrlBuilder(client)
 function urlFor(source: any) {
@@ -26,68 +43,22 @@ interface Project {
   order: number
 }
 
-// Animated countup that triggers on scroll into view
-function StatCountUp({ end, suffix = '', duration = 1200, className = '' }: { end: number; suffix?: string; duration?: number; className?: string }) {
-  const [count, setCount] = useState(0)
-  const [visible, setVisible] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (ref.current) {
-        const rect = ref.current.getBoundingClientRect()
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-          setVisible(true)
-        }
-      }
-    }
-    window.addEventListener("scroll", handleScroll)
-    handleScroll()
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
-  useEffect(() => {
-    if (!visible) return
-    let start = 0
-    if (start === end) return
-    let increment = Math.max(1, Math.ceil(end / (duration / 16)))
-    let current = start
-    const timer = setInterval(() => {
-      current += increment
-      if (current >= end) {
-        current = end
-        clearInterval(timer)
-      }
-      setCount(current)
-    }, 16)
-    return () => clearInterval(timer)
-  }, [end, duration, visible])
-
-  return <div ref={ref} className={className}>{count.toLocaleString()}{suffix}</div>
+async function getRecentProjects(): Promise<Project[]> {
+  const query = `*[_type == "project"] | order(_createdAt desc)[0..2] {
+    _id,
+    title,
+    slug,
+    description,
+    beforeImage,
+    afterImage,
+    services,
+    order
+  }`
+  return client.fetch(query)
 }
 
-export default function Home() {
-  const [recentProjects, setRecentProjects] = useState<Project[]>([])
-  const [showMore, setShowMore] = useState<{ [key: string]: boolean }>({})
-  const pathname = usePathname()
-
-  useEffect(() => {
-    async function fetchRecentProjects() {
-      const query = `*[_type == "project"] | order(_createdAt desc)[0..2] {
-        _id,
-        title,
-        slug,
-        description,
-        beforeImage,
-        afterImage,
-        services,
-        order
-      }`
-      const projects = await client.fetch(query)
-      setRecentProjects(projects)
-    }
-    fetchRecentProjects()
-  }, [])
+export default async function Home() {
+  const recentProjects = await getRecentProjects()
 
   const services = [
     {
@@ -123,9 +94,6 @@ export default function Home() {
     },
   ];
 
-  // Animation utility for fade-in-up
-  const fadeInUp = "animate-fade-in-up"
-
   return (
     <div className="min-h-screen bg-zinc-900">
       <Navigation />
@@ -144,17 +112,17 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent" />
         </div>
         <div className="relative z-10 container mx-auto px-4 text-center">
-          <div className={`inline-flex items-center gap-2 bg-orange-600/20 border border-orange-600/50 rounded-full px-4 py-2 mb-6 ${fadeInUp}`}>
+          <div className="inline-flex items-center gap-2 bg-orange-600/20 border border-orange-600/50 rounded-full px-4 py-2 mb-6 animate-fade-in-up">
             <Award className="w-4 h-4 text-orange-500 animate-bounce" />
             <span className="text-orange-500 text-sm font-semibold">Specialist sinds 2010</span>
           </div>
-          <h1 className={`text-5xl md:text-7xl font-bold text-white mb-6 text-balance ${fadeInUp} [animation-delay:100ms]`}>
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 text-balance animate-fade-in-up [animation-delay:100ms]">
             Uw Specialist in <span className="text-orange-500 animate-pulse">Velgen</span>.
           </h1>
-          <p className={`text-xl md:text-2xl text-zinc-300 mb-8 max-w-3xl mx-auto text-balance ${fadeInUp} [animation-delay:200ms]`}>
+          <p className="text-xl md:text-2xl text-zinc-300 mb-8 max-w-3xl mx-auto text-balance animate-fade-in-up [animation-delay:200ms]">
             Van reparatie en poedercoaten tot CNC afdraaien. Wij maken uw velgen weer als nieuw.
           </p>
-          <div className={`flex flex-col sm:flex-row gap-4 justify-center ${fadeInUp} [animation-delay:300ms]`}>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up [animation-delay:300ms]">
             <Button
               asChild
               size="lg"
@@ -175,33 +143,7 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="bg-zinc-950 border-y border-zinc-800">
-        <div className="container mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="text-center group">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <CheckCircle className="w-6 h-6 text-orange-500 group-hover:animate-spin" />
-                <StatCountUp end={5000} duration={3500} suffix="+" className="text-4xl font-bold text-white" />
-              </div>
-              <p className="text-zinc-400">Velgen Behandeld</p>
-            </div>
-            <div className="text-center group">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <Clock className="w-6 h-6 text-orange-500 group-hover:animate-spin" />
-                <StatCountUp end={15} duration={2500} suffix="+" className="text-4xl font-bold text-white" />
-              </div>
-              <p className="text-zinc-400">Jaar Ervaring</p>
-            </div>
-            <div className="text-center group">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <Award className="w-6 h-6 text-orange-500 group-hover:animate-bounce" />
-                <StatCountUp end={100} duration={2500} suffix="%" className="text-4xl font-bold text-white" />
-              </div>
-              <p className="text-zinc-400">Klanttevredenheid</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HomeClient />
 
       {/* Services Section */}
       <section className="py-20 bg-zinc-900 relative overflow-hidden">
@@ -248,7 +190,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Project Preview Section - Now Dynamic */}
+      {/* Project Preview Section */}
       <section className="py-20 bg-zinc-950">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -281,21 +223,8 @@ export default function Home() {
                       {project.title}
                     </p>
                     <p className="text-zinc-300 text-sm line-clamp-2">
-                      {showMore[project._id]
-                        ? project.description
-                        : project.description.slice(0, 80) + (project.description.length > 80 ? "..." : "")}
+                      {project.description.slice(0, 80) + (project.description.length > 80 ? "..." : "")}
                     </p>
-                    {project.description.length > 80 && (
-                      <button
-                        className="text-orange-500 text-xs mt-1 underline"
-                        onClick={e => {
-                          e.preventDefault()
-                          setShowMore(prev => ({ ...prev, [project._id]: !prev[project._id] }))
-                        }}
-                      >
-                        {showMore[project._id] ? "Minder weergeven" : "Meer weergeven"}
-                      </button>
-                    )}
                     {project.services.length > 0 && (
                       <div className="flex flex-wrap gap-2 mt-3">
                         {project.services.slice(0, 3).map((service, i) => (
@@ -411,7 +340,6 @@ export default function Home() {
       <footer className="bg-zinc-950 border-t border-zinc-800 py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* Column 1: Logo & About */}
             <div>
               <h3 className="text-2xl font-bold text-white mb-4">SmartWheels</h3>
               <p className="text-zinc-400 leading-relaxed">
@@ -419,35 +347,26 @@ export default function Home() {
                 dat uw velgen er weer als nieuw uitzien.
               </p>
             </div>
-            {/* Column 2: Handige links */}
             <div>
               <h4 className="text-lg font-semibold text-white mb-4">Handige links</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link href="/diensten" className={
-                    `transition-colors ${pathname === "/diensten" ? "text-orange-600 font-bold" : "text-zinc-400 hover:text-orange-600"}`
-                  }>
+                  <Link href="/diensten" className="text-zinc-400 hover:text-orange-600 transition-colors">
                     Diensten
                   </Link>
                 </li>
                 <li>
-                  <Link href="/projecten" className={
-                    `transition-colors ${pathname === "/projecten" ? "text-orange-600 font-bold" : "text-zinc-400 hover:text-orange-600"}`
-                  }>
+                  <Link href="/projecten" className="text-zinc-400 hover:text-orange-600 transition-colors">
                     Projecten
                   </Link>
                 </li>
                 <li>
-                  <Link href="/over-ons" className={
-                    `transition-colors ${pathname === "/over-ons" ? "text-orange-600 font-bold" : "text-zinc-400 hover:text-orange-600"}`
-                  }>
+                  <Link href="/over-ons" className="text-zinc-400 hover:text-orange-600 transition-colors">
                     Over Ons
                   </Link>
                 </li>
                 <li>
-                  <Link href="/contact" className={
-                    `transition-colors ${pathname === "/contact" ? "text-orange-600 font-bold" : "text-zinc-400 hover:text-orange-600"}`
-                  }>
+                  <Link href="/contact" className="text-zinc-400 hover:text-orange-600 transition-colors">
                     Contact
                   </Link>
                 </li>
@@ -463,7 +382,6 @@ export default function Home() {
                 </li>
               </ul>
             </div>
-            {/* Column 3: Contact */}
             <div>
               <h4 className="text-lg font-semibold text-white mb-4">Contactgegevens</h4>
               <div className="space-y-2 text-zinc-400">

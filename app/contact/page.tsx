@@ -4,6 +4,17 @@ import { Navigation } from "@/components/navigation"
 import { MapPin, Mail, Clock, Phone } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: "Contact - SmartWheels Andelst",
+  description: "Neem contact op met SmartWheels. Bezoek ons in Andelst of bel voor een afspraak. Maandag t/m vrijdag 08:00 - 17:00.",
+  keywords: ["contact", "locatie Andelst", "telefoonnummer", "openingstijden"],
+  openGraph: {
+    title: "Contact - SmartWheels",
+    description: "Contactgegevens en locatie van SmartWheels in Andelst.",
+  },
+}
 
 export default function ContactPage() {
   const contactInfo = [

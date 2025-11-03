@@ -4,6 +4,17 @@ import Image from "next/image"
 import Link from "next/link"
 import { client } from "@/sanity/lib/client"
 import { ProjectsContent } from "./content"
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: "Onze Projecten - SmartWheels Portfolio",
+  description: "Bekijk onze portfolio: 500+ velgen gerestaureerd. Van complete restauraties tot custom poedercoatings - zien is geloven!",
+  keywords: ["velgen portfolio", "voor en na", "velgenreparatie voorbeelden", "velgen transformatie"],
+  openGraph: {
+    title: "Onze Projecten - SmartWheels",
+    description: "Bekijk onze nieuwste transformaties en succesvolle projecten.",
+  },
+}
 
 interface Project {
   _id: string

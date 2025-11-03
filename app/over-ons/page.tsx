@@ -4,6 +4,17 @@ import { Navigation } from "@/components/navigation"
 import { Award, Users, Wrench, Heart } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: "Over SmartWheels - Uw Partner in Velgenservice",
+  description: "Leer over SmartWheels: 15+ jaar ervaring, vakmanschap, moderne apparatuur en passie voor velgen. Ontdek ons verhaal!",
+  keywords: ["over ons", "SmartWheels", "velgenspecialist", "ervaring", "vakmanschap"],
+  openGraph: {
+    title: "Over SmartWheels - Uw Partner in Velgenservice",
+    description: "Specialist in velgenservice met passie voor perfectie en vakmanschap.",
+  },
+}
 
 export default function OverOnsPage() {
   const values = [
