@@ -93,22 +93,22 @@ export default function OverOnsPage() {
               <CardContent className="p-8 md:p-12">
                 <h2 className="text-3xl font-bold text-white mb-6">Ons Verhaal</h2>
                 <div className="space-y-4 text-zinc-300 leading-relaxed">
-                  <p className="animate-in fade-in duration-700 delay-400">
+                  <p>
                     SmartWheels is ontstaan uit een passie voor auto's en een oog voor detail. Wat begon als een kleine
                     onderneming is uitgegroeid tot een gespecialiseerd bedrijf in velgenservice, waar kwaliteit en
                     vakmanschap voorop staan.
                   </p>
-                  <p className="animate-in fade-in duration-700 delay-500">
+                  <p>
                     Met meer dan 10 jaar ervaring in de branche hebben wij ons ontwikkeld tot een betrouwbare partner
                     voor particulieren en bedrijven. Of het nu gaat om een complete restauratie, een custom
                     poedercoating of precisie CNC-werk, wij behandelen elke velg met dezelfde zorg en aandacht.
                   </p>
-                  <p className="animate-in fade-in duration-700 delay-600">
+                  <p>
                     Ons team bestaat uit ervaren vakmensen die hun kennis en kunde dagelijks inzetten om het beste
                     resultaat te behalen. We investeren continu in de nieuwste apparatuur en technieken, zodat we onze
                     klanten altijd de hoogste kwaliteit kunnen bieden.
                   </p>
-                  <p className="animate-in fade-in duration-700 delay-700">
+                  <p>
                     Bij SmartWheels draait het niet alleen om velgen, maar om de complete ervaring. Van het eerste
                     contact tot de oplevering, wij zorgen voor een persoonlijke en professionele service. Uw
                     tevredenheid is onze grootste motivatie.
@@ -138,7 +138,7 @@ export default function OverOnsPage() {
                 style={{ animationDelay: `${100 * (index + 1)}ms` }}
               >
                 <CardContent className="p-6">
-                  <value.icon className="w-12 h-12 text-orange-600 mb-4 mx-auto animate-in zoom-in duration-700" style={{ animationDelay: `${100 * (index + 1) + 200}ms` }} />
+                  <value.icon className="w-12 h-12 text-orange-600 mb-4 mx-auto" />
                   <h3 className="text-xl font-semibold text-white mb-3">{value.title}</h3>
                   <p className="text-zinc-400 leading-relaxed">{value.description}</p>
                 </CardContent>

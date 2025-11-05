@@ -101,7 +101,7 @@ export default function ContactPage() {
                 >
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
-                      <info.icon className="w-6 h-6 text-orange-600 flex-shrink-0 mt-1 animate-in zoom-in duration-700" style={{ animationDelay: `${100 * index + 200}ms` }} />
+                      <info.icon className="w-6 h-6 text-orange-600 flex-shrink-0 mt-1" />
                       <div>
                         <h3 className="text-lg font-semibold text-white mb-2">{info.title}</h3>
                         <div className="text-zinc-300 leading-relaxed">{info.content}</div>
@@ -151,15 +151,15 @@ export default function ContactPage() {
               <CardContent className="p-8">
                 <h2 className="text-2xl font-bold text-white mb-4">Routebeschrijving</h2>
                 <div className="text-zinc-300 leading-relaxed space-y-3">
-                  <p className="animate-in fade-in duration-700 delay-200">
+                  <p>
                     SmartWheels is gemakkelijk te bereiken vanaf de A15 en A50. Neem afslag Andelst en volg de borden
                     richting het industrieterrein.
                   </p>
-                  <p className="animate-in fade-in duration-700 delay-300">
+                  <p>
                     Wij bevinden ons op Expeditieweg 8F, een moderne bedrijfslocatie met voldoende parkeergelegenheid
                     voor onze klanten.
                   </p>
-                  <p className="font-semibold text-white animate-in fade-in duration-700 delay-400">
+                  <p className="font-semibold text-white">
                     Tip: Maak vooraf een afspraak, zodat wij voldoende tijd voor u kunnen reserveren en u direct
                     geholpen kunt worden.
                   </p>
