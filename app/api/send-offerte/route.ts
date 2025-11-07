@@ -129,7 +129,7 @@ export async function POST(req: Request) {
     // Send admin email
     console.log("Sending admin email...");
     await resend.emails.send({
-      from: "SmartWheels <onboarding@resend.dev>",
+      from: "SmartWheels <noreply@smart-wheels.nl>",
       to: "smartwheels1@outlook.com",
       replyTo: email,
       subject: `Nieuwe offerte aanvraag van ${name}`,
@@ -140,8 +140,9 @@ export async function POST(req: Request) {
     // Send confirmation email to customer
     console.log("Sending confirmation email to customer...");
     await resend.emails.send({
-      from: "SmartWheels <smartwheels1@outlook.com>",
+      from: "SmartWheels <noreply@smart-wheels.nl>",
       to: email,
+      replyTo: "smartwheels1@outlook.com",
       subject: "Bevestiging van uw offerte-aanvraag bij SmartWheels",
       html: confirmationEmailHtml,
     });
